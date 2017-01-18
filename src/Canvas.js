@@ -1,20 +1,23 @@
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
-import { mouseActions } from './actions'
+import { mouseActions, registerCanvas } from './actions'
 
 class Canvas extends Component {
     constructor (props) {
         super(props)
     }
     componentDidMount() {
-        this.canvas = findDOMNode(this)
-        this.context = this.canvas.getContext('2d')
+        const { registerCanvas, context } = this.props
+        if ( context == null ) {
+            const _canvas = findDOMNode(this)
+            registerCanvas( _canvas.getContext('2d') )
+        }
     }
     render () {
-        const ctx = this.context
         const { mouseActions, border } = this.props
-        const { down, move, up } = mouseActions(ctx)
+        const { down, move, up } = mouseActions()
+        console.log(up)
         return (
             <canvas onMouseDown={down}
                     onMouseMove={move}
@@ -28,12 +31,13 @@ class Canvas extends Component {
 }
 
 export default connect(
-    state => ({ border: state.canvas.border }),
+    state => ({ ...state.canvas }),
     dispatch => ({
-        mouseActions: (ctx) => ({
-            down: (e) => dispatch( mouseActions.down(ctx, e) ),
-            move: (e) => dispatch( mouseActions.move(ctx, e) ),
-            up: (e) => dispatch( mouseActions.up(ctx, e) ),
-        })
+        mouseActions: () => ({
+            down: (e) => dispatch( mouseActions.down(e) ),
+            move: (e) => dispatch( mouseActions.move(e) ),
+            up: (e) => dispatch( mouseActions.up(e) ),
+        }),
+        registerCanvas: (ctx) => dispatch( registerCanvas(ctx) )
     })
 )(Canvas)
