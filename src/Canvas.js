@@ -11,13 +11,18 @@ class Canvas extends Component {
         const { registerCanvas, context } = this.props
         if ( context == null ) {
             const _canvas = findDOMNode(this)
+            _canvas.width = 600
+            _canvas.height = 600
             registerCanvas( _canvas.getContext('2d') )
         }
     }
     render () {
-        const { mouseActions, border } = this.props
-        const { down, move, up } = mouseActions()
-        console.log(up)
+        const { mouseActions, border, isDrawing, tool } = this.props
+        let { down, move, up } = mouseActions(tool)
+        if ( !isDrawing ) {
+            move = null
+            up = null
+        }
         return (
             <canvas onMouseDown={down}
                     onMouseMove={move}
@@ -33,10 +38,10 @@ class Canvas extends Component {
 export default connect(
     state => ({ ...state.canvas }),
     dispatch => ({
-        mouseActions: () => ({
-            down: (e) => dispatch( mouseActions.down(e) ),
-            move: (e) => dispatch( mouseActions.move(e) ),
-            up: (e) => dispatch( mouseActions.up(e) ),
+        mouseActions: (tool) => ({
+            down: (e) => dispatch( mouseActions.down(e, tool) ),
+            move: (e) => dispatch( mouseActions.move(e, tool) ),
+            up: (e) => dispatch( mouseActions.up(e, tool) ),
         }),
         registerCanvas: (ctx) => dispatch( registerCanvas(ctx) )
     })

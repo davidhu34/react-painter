@@ -2,7 +2,7 @@ export const Add = () => ({
     type: 'ADD'
 })
 
-const mouseAction = type => event => ({ type, event })
+const mouseAction = type => ( event, tool ) => ({ type, event, tool })
 
 export const mouseActions = {
     down: mouseAction('MOUSE_DOWN'),

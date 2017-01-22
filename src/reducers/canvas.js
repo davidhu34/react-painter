@@ -1,42 +1,53 @@
 import { mouseEvent } from '../canvas/eventHandler'
 
+const defaultContextConfig = {
+    lineWidth: 6,
+    strokeStyle: '#00000f',
+    fillStyle: '#00000f'
+}
 const initCanvas = {
-    mouse: 'up',
     border: '2px solid black',
-    tool: 'pen',
-    size: 6,
-    strokeColor: '#00000f',
-    fillColor: '#00000f',
-    context: null
+    isDrawing: false,
+    tool: 'pen'
+}
+const initContext = null
+const initContextConfig = ctx => {
+    const { lineWidth, strokeStyle, fillStyle } = defaultContextConfig
+    ctx.lineWidth = lineWidth
+    ctx.strokeStyle = strokeStyle
+    ctx.fillStyle = fillStyle
+    ctx.lineJoin = 'round'
+    ctx.lineCap = 'round'
+    return ctx
 }
 
-const canvas = ( state = initCanvas, action ) => {
+export const context = ( state = initContext, action ) => {
     switch ( action.type ) {
         case 'REG_CANVAS':
-            return {
-                ...state,
-                context: action.context
-            }
+            const ctx = action.context
+            return initContextConfig(ctx)
         case 'MOUSE_DOWN':
-            mouseEvent( state, action )
-            return {
-                ...state,
-                mouse: 'down'
-            }
         case 'MOUSE_MOVE':
-            mouseEvent( state, action )
-            return state
         case 'MOUSE_UP':
-            mouseEvent( state, action )
+            return mouseEvent( state, action )
+        default:
+            return state
+    }
+
+}
+export const canvas = ( state = initCanvas, action ) => {
+    switch ( action.type ) {
+        case 'MOUSE_DOWN':
             return {
                 ...state,
-                mouse: 'up'
+                isDrawing: true,
+            }
+        case 'MOUSE_UP':
+            return {
+                ...state,
+                isDrawing: false,
             }
         default:
             return state
     }
 }
-
-
-
-export default canvas

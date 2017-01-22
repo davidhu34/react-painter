@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux'
 import { data } from './data'
-import canvas from './canvas'
+import { canvas, context } from './canvas'
 const App = combineReducers({
     data,
-    canvas
+    canvas,
+    context
 })
 
 export default App
