@@ -7,7 +7,9 @@ const mouseAction = type => ( event, tool ) => ({ type, event, tool })
 export const mouseActions = {
     down: mouseAction('MOUSE_DOWN'),
     move: mouseAction('MOUSE_MOVE'),
-    up: mouseAction('MOUSE_UP')
+    up: mouseAction('MOUSE_UP'),
+    out: mouseAction('MOUSE_OUT'),
+    enter: mouseAction('MOUSE_ENTER')
 }
 
 export const registerCanvas = ctx => ({

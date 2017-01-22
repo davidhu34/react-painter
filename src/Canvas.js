@@ -18,16 +18,19 @@ class Canvas extends Component {
     }
     render () {
         const { mouseActions, border, isDrawing, tool } = this.props
-        let { down, move, up } = mouseActions(tool)
+        let { down, move, up, out, enter } = mouseActions(tool)
         if ( !isDrawing ) {
             move = null
             up = null
+            //out = null
+            //enter = null
         }
         return (
             <canvas onMouseDown={down}
                     onMouseMove={move}
                     onMouseOut={up}
                     onMouseUp={up}
+                    //onMouseEnter={enter}
                     style={{
                         border: border
                     }}/>
@@ -42,6 +45,8 @@ export default connect(
             down: (e) => dispatch( mouseActions.down(e, tool) ),
             move: (e) => dispatch( mouseActions.move(e, tool) ),
             up: (e) => dispatch( mouseActions.up(e, tool) ),
+            out: (e) => dispatch( mouseActions.out(e, tool) ),
+            enter: (e) => dispatch( mouseActions.enter(e, tool) )
         }),
         registerCanvas: (ctx) => dispatch( registerCanvas(ctx) )
     })
