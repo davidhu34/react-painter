@@ -9,6 +9,28 @@ const newSaves = (ctx, saves) => {
         imgs : imgs.slice(0,10)
 }
 
+
+const bindUtils = context => ({
+    drawDot: (x, y) => {
+        const strokeColor = context.strokeStyle
+        const fillColor = context.fillStyle
+        context.beginPath()
+        context.arc(x, y, context.lineWidth/2, 0, 2*Math.PI, false)
+        context.fillStyle = strokeColor
+        context.fill()
+        context.closePath()
+        context.fillStyle = fillColor
+    },
+    drawLine: (x, y, points) => {
+        context.beginPath()
+        context.moveTo( points[0].x, points[0].y )
+        for (let i = 0; i < points.length; i++)
+            context.lineTo( points[i].x, points[i].y)
+        context.stroke()
+        context.closePath()
+    }
+})
+
 export const mouseEvent = ( contextState, action ) => {
     const { context, saves, points, config } = contextState
     const { type, event, tool } = action
@@ -19,7 +41,6 @@ export const mouseEvent = ( contextState, action ) => {
     const canvas = context.canvas
 
     const { x, y } = getCoordinate( context.canvas, event )
-
     context.clearRect(0, 0, canvas.width, canvas.height)
     const lastSave = saves.length > 0 ?
         saves[0] : null
@@ -31,54 +52,38 @@ export const mouseEvent = ( contextState, action ) => {
         console.log(lastSave)
     }*/
 
+
+    const utils = bindUtils(context)
     switch (tool) {
+        case 'line':
+            switch (type) {
+                default:
+            }
         case 'pen':
         default:
             const newPoints = [ ...points, { x, y }]
-            switch ( type ) {
+            switch (type) {
                 case 'MOUSE_DOWN':
-                    context.beginPath()
-                    context.arc(x, y, size/2, 0, 2*Math.PI, false)
-                    context.fillStyle = strokeColor
-                    context.fill()
-                    context.closePath()
-                    context.fillStyle = fillColor
+                    utils.drawDot(x,y)
                     return {
                         ...contextState,
                         points: newPoints
                     }
                 case 'MOUSE_MOVE':
-                    context.beginPath()
-                    context.moveTo( newPoints[0].x, newPoints[0].y )
-                    for (let i = 0; i < newPoints.length; i++)
-                        context.lineTo( newPoints[i].x, newPoints[i].y)
-                    context.stroke()
-                    context.closePath()
+                    utils.drawLine(x, y, newPoints)
                     return {
                         ...contextState,
                         points: newPoints
                     }
                 case 'MOUSE_UP':
-                    context.beginPath()
-                    context.moveTo( newPoints[0].x, newPoints[0].y )
-                    for (let i = 1; i < newPoints.length; i++)
-                        context.lineTo( newPoints[i].x, newPoints[i].y)
-                    context.stroke()
-                    context.closePath()
+                    utils.drawLine(x, y, newPoints)
                     return {
                         ...contextState,
                         points: [],
                         saves: newSaves(context, saves)
                     }
-/*                case 'MOUSE_OUT':   // while isDrawing
-                    context.closePath()
-                    break
-                case 'MOUSE_ENTER': // while isDrawing
-                    context.beginPath()
-                    context.moveTo(x,y)
-                    break
-*/
                 default:
             }
+        // end pen / default
     }
 }
