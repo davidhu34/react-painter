@@ -3,6 +3,12 @@ const getCoordinate = ( canvas, e ) => ({
     y: e.clientY - canvas.offsetTop,
 })
 
+const newSaves = (ctx, saves) => {
+    const imgs = [ctx.getImageData(0,0,600,600), ...saves]
+    return saves.length < 10 ?
+        imgs : imgs.slice(0,10)
+}
+
 export const mouseEvent = ( contextState, action ) => {
     const { context, saves, points, config } = contextState
     const { type, event, tool } = action
@@ -14,15 +20,16 @@ export const mouseEvent = ( contextState, action ) => {
 
     const { x, y } = getCoordinate( context.canvas, event )
 
-
-    //context.clearRect(0, 0, canvas.width, canvas.height)
-    let lastSave
-    if (saves.length > 0) {
+    context.clearRect(0, 0, canvas.width, canvas.height)
+    const lastSave = saves.length > 0 ?
+        saves[0] : null
+    if (lastSave) context.putImageData(lastSave,0,0)
+    /*if (saves.length > 0) {
         lastSave = new Image()
-        lastSave.src = saves[saves.length-1]
         context.drawImage(lastSave, 0, 0)
+        lastSave.src = saves[saves.length-1]
         console.log(lastSave)
-    }
+    }*/
 
     switch (tool) {
         case 'pen':
@@ -58,13 +65,10 @@ export const mouseEvent = ( contextState, action ) => {
                         context.lineTo( newPoints[i].x, newPoints[i].y)
                     context.stroke()
                     context.closePath()
-                    const window = 1
-                    console.log(window)
-                    console.log(stop)
                     return {
                         ...contextState,
                         points: [],
-                        saves: [...saves, canvas.toDataURL()]
+                        saves: newSaves(context, saves)
                     }
 /*                case 'MOUSE_OUT':   // while isDrawing
                     context.closePath()
