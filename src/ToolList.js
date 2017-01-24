@@ -6,7 +6,7 @@ import Tool from './Tool'
 
 const ToolList = ({ tool, selectTool }) => {
     const selected = tool
-    const tools = [ 'pen', 'line', 'square']
+    const tools = [ 'pen', 'line', 'square', 'rect', 'circle', 'oval' ]
     console.log(tool)
     return (
         <div>
