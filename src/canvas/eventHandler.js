@@ -28,6 +28,18 @@ const bindUtils = context => ({
             context.lineTo( points[i].x, points[i].y)
         context.stroke()
         context.closePath()
+    },
+    drawSquare: ( x, y, points ) => {
+        const x0 = points[0].x
+        const y0 = points[0].y
+        context.beginPath()
+        context.moveTo(x0, y0)
+        context.lineTo(x,y0)
+        context.lineTo(x,y)
+        context.lineTo(x0,y)
+        context.lineTo(x0,y0)
+        context.stroke()
+        context.closePath()
     }
 })
 
@@ -55,6 +67,26 @@ export const mouseEvent = ( contextState, action ) => {
 
     const utils = bindUtils(context)
     switch (tool) {
+        case 'square':
+            switch (type) {
+                case 'MOUSE_DOWN':
+                    utils.drawDot(x,y)
+                    return {
+                        ...contextState,
+                        points: [{x, y}]
+                    }
+                case 'MOUSE_MOVE':
+                    utils.drawSquare(x, y,points)
+                    return contextState
+                case 'MOUSE_UP':
+                    utils.drawSquare(x, y, points)
+                default:
+                    return {
+                        ...contextState,
+                        points: [],
+                        saves: newSaves(context, saves)
+                    }
+            }   // end line
         case 'line':
             switch (type) {
                 case 'MOUSE_DOWN':
