@@ -16,3 +16,8 @@ export const registerCanvas = ctx => ({
     type: 'REG_CANVAS',
     context: ctx
 })
+
+export const selectTool = tool => ({
+    type: 'SELECT_TOOL',
+    tool: tool
+})

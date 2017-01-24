@@ -57,6 +57,11 @@ export const canvas = ( state = initCanvas, action ) => {
                 ...state,
                 isDrawing: false,
             }
+        case 'SELECT_TOOL':
+            return {
+                ...state,
+                tool: action.tool
+            }
         default:
             return state
     }

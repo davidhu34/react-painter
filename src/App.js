@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
 import Canvas from './Canvas'
-
+import ToolList from './ToolList'
 import { Add } from './actions'
 
 
@@ -13,6 +13,7 @@ const App = ({ data, Add }) => (
             add
         </div>
         <Canvas />
+        <ToolList />
     </div>
 )
 

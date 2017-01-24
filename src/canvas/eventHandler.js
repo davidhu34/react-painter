@@ -57,8 +57,24 @@ export const mouseEvent = ( contextState, action ) => {
     switch (tool) {
         case 'line':
             switch (type) {
+                case 'MOUSE_DOWN':
+                    utils.drawDot(x,y)
+                    return {
+                        ...contextState,
+                        points: [{x, y}]
+                    }
+                case 'MOUSE_MOVE':
+                    utils.drawLine(x, y, [...points, {x, y}])
+                    return contextState
+                case 'MOUSE_UP':
+                    utils.drawLine(x, y, [...points, {x, y}])
                 default:
-            }
+                    return {
+                        ...contextState,
+                        points: [],
+                        saves: newSaves(context, saves)
+                    }
+            }   // end line
         case 'pen':
         default:
             const newPoints = [ ...points, { x, y }]
@@ -77,13 +93,12 @@ export const mouseEvent = ( contextState, action ) => {
                     }
                 case 'MOUSE_UP':
                     utils.drawLine(x, y, newPoints)
+                default:
                     return {
                         ...contextState,
                         points: [],
                         saves: newSaves(context, saves)
                     }
-                default:
-            }
-        // end pen / default
+            }   // end pen
     }
 }
