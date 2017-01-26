@@ -6,11 +6,11 @@ class Canvas extends Component {
         super(props)
     }
     componentDidMount() {
-        const { registerCanvas, context } = this.props
+        const { registerCanvas, context, width, height } = this.props
         if ( context == null ) {
             const _canvas = findDOMNode(this)
-            _canvas.width = 600
-            _canvas.height = 600
+            _canvas.width = width
+            _canvas.height = height
             registerCanvas( _canvas.getContext('2d') )
         }
     }

@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import Painter from './Painter'
 import ToolList from './ToolList'
 import ColorRibbon from './ColorRibbon'
+import ColorPalette from './ColorPalette'
 import { Add } from './actions'
 
 
@@ -14,6 +15,7 @@ const App = ({ data, Add }) => (
             add
         </div>
         <ToolList />
+        <ColorPalette />
         <ColorRibbon />
         <Painter />
     </div>

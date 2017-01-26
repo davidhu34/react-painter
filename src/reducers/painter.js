@@ -1,6 +1,8 @@
 import { mouseEvent } from '../canvas/eventHandler'
 
 const initPainter = {
+    width: 500,
+    height: 500,
     style: {border: '2px solid black'},
     isDown: false,
     tool: 'pen',
