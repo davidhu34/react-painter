@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import Painter from './Painter'
 import ToolList from './ToolList'
+import ColorRibbon from './ColorRibbon'
 import { Add } from './actions'
 
 
@@ -12,8 +13,9 @@ const App = ({ data, Add }) => (
         <div onClick={() => Add()}>
             add
         </div>
-        <Painter />
         <ToolList />
+        <ColorRibbon />
+        <Painter />
     </div>
 )
 
