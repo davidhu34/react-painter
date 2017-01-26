@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
-import { mouseActions, registerCanvas } from './actions'
+import { painterMouseActions, registerCanvas } from './actions'
 
 class Canvas extends Component {
     constructor (props) {
@@ -17,37 +17,23 @@ class Canvas extends Component {
         }
     }
     render () {
-        const { mouseActions, border, isDrawing, tool } = this.props
-        let { down, move, up, out, enter } = mouseActions(tool)
-        if ( !isDrawing ) {
-            move = null
-            up = null
-            //out = null
-            //enter = null
-        }
+        const { mouseActions, style, isDown, tool } = this.props
+        const { down, move, up } = mouseActions
         return (
-            <canvas onMouseDown={down}
-                    onMouseMove={move}
-                    onMouseOut={up}
-                    onMouseUp={up}
+            <canvas onMouseDown={ isDown ? null : down }
+                    onMouseMove={ isDown ? move : null }
+                    onMouseOut={ isDown ? up : null }
+                    onMouseUp={ isDown ? up : null }
                     //onMouseEnter={enter}
-                    style={{
-                        border: border
-                    }}/>
+                    style={style}/>
         )
     }
 }
 
 export default connect(
-    state => ({ ...state.canvas }),
+    state => ({ ...state.painter }),
     dispatch => ({
-        mouseActions: (tool) => ({
-            down: (e) => dispatch( mouseActions.down(e, tool) ),
-            move: (e) => dispatch( mouseActions.move(e, tool) ),
-            up: (e) => dispatch( mouseActions.up(e, tool) ),
-            out: (e) => dispatch( mouseActions.out(e, tool) ),
-            enter: (e) => dispatch( mouseActions.enter(e, tool) )
-        }),
+        mouseActions: painterMouseActions(dispatch),
         registerCanvas: (ctx) => dispatch( registerCanvas(ctx) )
     })
 )(Canvas)

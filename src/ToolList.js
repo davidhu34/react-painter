@@ -23,7 +23,7 @@ const ToolList = ({ tool, selectTool }) => {
 
 
 export default connect(
-    state => ({ tool: state.canvas.tool }),
+    state => ({ tool: state.painter.tool }),
     dispatch => ({
         selectTool: (tool) => dispatch( selectTool(tool) )
     })

@@ -1,3 +1,7 @@
+const DOWN = 'PAINTER_MOUSE_DOWN'
+const MOVE = 'PAINTER_MOUSE_MOVE'
+const UP = 'PAINTER_MOUSE_UP'
+
 const getCoordinate = ( canvas, e ) => ({
     x: e.clientX - canvas.offsetLeft,
     y: e.clientY - canvas.offsetTop,
@@ -108,8 +112,8 @@ const utils = ({
 })
 
 export const mouseEvent = ( contextState, action ) => {
-    const { context, saves, points, config } = contextState
-    const { type, event, tool } = action
+    const { context, saves, points, config, tool } = contextState
+    const { type, event } = action
 
     const fillColor = context.fillStyle
     const strokeColor = context.strokeStyle
@@ -132,15 +136,15 @@ export const mouseEvent = ( contextState, action ) => {
     switch (tool) {
         case 'oval':
             switch (type) {
-                case 'MOUSE_DOWN':
+                case DOWN:
                     return {
                         ...contextState,
                         points: [{x, y}]
                     }
-                case 'MOUSE_MOVE':
+                case MOVE:
                     utils.drawOval(context)(x, y, points[0])
                     return contextState
-                case 'MOUSE_UP':
+                case UP:
                     utils.drawOval(context)(x, y, points[0])
                 default:
                     return {
@@ -151,15 +155,15 @@ export const mouseEvent = ( contextState, action ) => {
             }   // end oval
         case 'circle':
             switch (type) {
-                case 'MOUSE_DOWN':
+                case DOWN:
                     return {
                         ...contextState,
                         points: [{x, y}]
                     }
-                case 'MOUSE_MOVE':
+                case MOVE:
                     utils.drawCircle(context)(x, y, points[0])
                     return contextState
-                case 'MOUSE_UP':
+                case UP:
                     utils.drawCircle(context)(x, y, points[0])
                 default:
                     return {
@@ -170,16 +174,16 @@ export const mouseEvent = ( contextState, action ) => {
             }   // end circle
         case 'rect':
             switch (type) {
-                case 'MOUSE_DOWN':
+                case DOWN:
                     utils.drawDot(x,y)
                     return {
                         ...contextState,
                         points: [{x, y}]
                     }
-                case 'MOUSE_MOVE':
+                case MOVE:
                     utils.drawRect(context)(x, y, points[0])
                     return contextState
-                case 'MOUSE_UP':
+                case UP:
                     utils.drawRect(context)(x, y, points[0])
                 default:
                     return {
@@ -190,16 +194,16 @@ export const mouseEvent = ( contextState, action ) => {
             }   // end rect
         case 'square':
             switch (type) {
-                case 'MOUSE_DOWN':
+                case DOWN:
                     utils.drawDot(x,y)
                     return {
                         ...contextState,
                         points: [{x, y}]
                     }
-                case 'MOUSE_MOVE':
+                case MOVE:
                     utils.drawSquare(context)(x, y, points[0])
                     return contextState
-                case 'MOUSE_UP':
+                case UP:
                     utils.drawSquare(context)(x, y, points[0])
                 default:
                     return {
@@ -210,16 +214,16 @@ export const mouseEvent = ( contextState, action ) => {
             }   // end square
         case 'line':
             switch (type) {
-                case 'MOUSE_DOWN':
+                case DOWN:
                     utils.drawDot(x,y)
                     return {
                         ...contextState,
                         points: [{x, y}]
                     }
-                case 'MOUSE_MOVE':
+                case MOVE:
                     utils.drawLine(context)(x, y, [...points, {x, y}])
                     return contextState
-                case 'MOUSE_UP':
+                case UP:
                     utils.drawLine(context)(x, y, [...points, {x, y}])
                 default:
                     return {
@@ -232,19 +236,19 @@ export const mouseEvent = ( contextState, action ) => {
         default:
             const newPoints = [ ...points, { x, y }]
             switch (type) {
-                case 'MOUSE_DOWN':
+                case DOWN:
                     utils.drawDot(context)(x,y)
                     return {
                         ...contextState,
                         points: newPoints
                     }
-                case 'MOUSE_MOVE':
+                case MOVE:
                     utils.drawLine(context)(x, y, newPoints)
                     return {
                         ...contextState,
                         points: newPoints
                     }
-                case 'MOUSE_UP':
+                case UP:
                     utils.drawLine(context)(x, y, newPoints)
                 default:
                     return {

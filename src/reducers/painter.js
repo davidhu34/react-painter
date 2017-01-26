@@ -1,11 +1,9 @@
 import { mouseEvent } from '../canvas/eventHandler'
 
-const initCanvas = {
-    border: '2px solid black',
-    isDrawing: false,
-    tool: 'pen'
-}
-const initContext = {
+const initPainter = {
+    style: {border: '2px solid black'},
+    isDown: false,
+    tool: 'pen',
     context: null,
     saves: [],
     points: [],
@@ -26,37 +24,26 @@ const initContextConfig = ctx => {
     return ctx
 }
 
-export const context = ( state = initContext, action ) => {
+const painter = ( state = initPainter, action ) => {
     switch ( action.type ) {
-        case 'REG_CANVAS':
+        case 'PAINTER_REG_CANVAS':
             const ctx = action.context
             return {
                 ...state,
                 context: initContextConfig(ctx)
             }
-        case 'MOUSE_DOWN':
-        case 'MOUSE_MOVE':
-        case 'MOUSE_UP':
-        case 'MOUSE_ENTER':
-        case 'MOUSE_OUT':
+        case 'PAINTER_MOUSE_DOWN':
+            return mouseEvent({
+                ...state,
+                isDown: true
+            }, action )
+        case 'PAINTER_MOUSE_MOVE':
             return mouseEvent( state, action )
-        default:
-            return state
-    }
-
-}
-export const canvas = ( state = initCanvas, action ) => {
-    switch ( action.type ) {
-        case 'MOUSE_DOWN':
-            return {
+        case 'PAINTER_MOUSE_UP':
+            return mouseEvent({
                 ...state,
-                isDrawing: true,
-            }
-        case 'MOUSE_UP':
-            return {
-                ...state,
-                isDrawing: false,
-            }
+                isDown: false
+            }, action )
         case 'SELECT_TOOL':
             return {
                 ...state,
@@ -66,3 +53,5 @@ export const canvas = ( state = initCanvas, action ) => {
             return state
     }
 }
+
+export default painter

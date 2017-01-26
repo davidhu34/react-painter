@@ -2,18 +2,22 @@ export const Add = () => ({
     type: 'ADD'
 })
 
-const mouseAction = type => ( event, tool ) => ({ type, event, tool })
+const mouseAction = (type, event) => ({ type, event })
 
-export const mouseActions = {
-    down: mouseAction('MOUSE_DOWN'),
-    move: mouseAction('MOUSE_MOVE'),
-    up: mouseAction('MOUSE_UP'),
-    out: mouseAction('MOUSE_OUT'),
-    enter: mouseAction('MOUSE_ENTER')
-}
+const mouseActions = (upon, dispatch) => ({
+    down : (e) => dispatch(mouseAction(upon+'MOUSE_DOWN', e)),
+    move: (e) => dispatch(mouseAction(upon+'MOUSE_MOVE', e)),
+    up: (e) => dispatch(mouseAction(upon+'MOUSE_UP', e)),
+    out: (e) => dispatch(mouseAction(upon+'MOUSE_OUT', e)),
+    enter: (e) => dispatch(mouseAction(upon+'MOUSE_ENTER', e))
+})
+
+export const painterMouseActions = dispatch =>
+    mouseActions('PAINTER_', dispatch)
+
 
 export const registerCanvas = ctx => ({
-    type: 'REG_CANVAS',
+    type: 'PAINTER_REG_CANVAS',
     context: ctx
 })
 
