@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
-import Canvas from './Canvas'
+import Painter from './Painter'
 import ToolList from './ToolList'
 import { Add } from './actions'
 
@@ -12,7 +12,7 @@ const App = ({ data, Add }) => (
         <div onClick={() => Add()}>
             add
         </div>
-        <Canvas />
+        <Painter />
         <ToolList />
     </div>
 )

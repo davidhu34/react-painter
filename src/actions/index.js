@@ -16,9 +16,9 @@ export const painterMouseActions = dispatch =>
     mouseActions('PAINTER_', dispatch)
 
 
-export const registerCanvas = ctx => ({
+export const painterRegisterCanvas = context => ({
     type: 'PAINTER_REG_CANVAS',
-    context: ctx
+    context: context
 })
 
 export const selectTool = tool => ({

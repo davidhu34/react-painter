@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
-import { connect } from 'react-redux'
-import { painterMouseActions, registerCanvas } from './actions'
 
 class Canvas extends Component {
     constructor (props) {
@@ -17,7 +15,7 @@ class Canvas extends Component {
         }
     }
     render () {
-        const { mouseActions, style, isDown, tool } = this.props
+        const { mouseActions, style, isDown } = this.props
         const { down, move, up } = mouseActions
         return (
             <canvas onMouseDown={ isDown ? null : down }
@@ -30,10 +28,4 @@ class Canvas extends Component {
     }
 }
 
-export default connect(
-    state => ({ ...state.painter }),
-    dispatch => ({
-        mouseActions: painterMouseActions(dispatch),
-        registerCanvas: (ctx) => dispatch( registerCanvas(ctx) )
-    })
-)(Canvas)
+export default Canvas
