@@ -4,7 +4,7 @@ import { paletteMouseActions, paletteRegisterCanvas } from './actions'
 import Canvas from './Canvas'
 
 export default connect(
-    state => ({ ...state.colorPicker.palette }),
+    state => ({ ...state.painter.colorPicker.palette }),
     dispatch => ({
         mouseActions: paletteMouseActions(dispatch),
         registerCanvas: (ctx) => dispatch( paletteRegisterCanvas(ctx) )

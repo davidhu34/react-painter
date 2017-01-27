@@ -6,7 +6,6 @@ const Tool = ({
 }) => {
     const renderTool = selected?
         (<b>{tool}</b>) : (tool)
-    console.log(renderTool)
     return (
         <div onClick={selectTool}>
             {renderTool}

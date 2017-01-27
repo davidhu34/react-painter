@@ -1,50 +1,38 @@
-import { mouseEvent } from '../canvas/eventHandler'
+import { painterEvent } from './mouseEvents'
+import { initState, initContext } from './init'
 
-const initPainter = {
-    width: 500,
-    height: 500,
-    style: {border: '2px solid black'},
-    isDown: false,
-    tool: 'pen',
-    context: null,
-    saves: [],
-    points: [],
-    config: {
-        strokeStyle: '#00000f',
-        fillStyle: '#00000f',
-        lineWidth: 15,
-        lineJoin: 'round',
-        lineCap: 'round'
-    }
-}
-const initContextConfig = ctx => {
-    ctx.strokeStyle = '#0dd00f'
-    ctx.fillStyle = '#00000f'
-    ctx.lineWidth = 15
-    ctx.lineJoin = 'round'
-    ctx.lineCap = 'round'
-    return ctx
-}
-
-const painter = ( state = initPainter, action ) => {
+const painter = ( state = initState, action ) => {
+    const { painter, colorPicker } = state
     switch ( action.type ) {
         case 'PAINTER_REG_CANVAS':
-            const ctx = action.context
             return {
                 ...state,
-                context: initContextConfig(ctx)
+                painter: initContext(painter, action)
+            }
+        case 'RIBBON_REG_CANVAS':
+        case 'PALETTE_REG_CANVAS':
+            return {
+                ...state,
+                colorPicker:
+                    initContext(colorPicker, action)
             }
         case 'PAINTER_MOUSE_DOWN':
-            return mouseEvent({
+            return painterEvent({
                 ...state,
-                isDown: true
+                painter: {
+                    ...painter,
+                    isDown: true
+                }
             }, action )
         case 'PAINTER_MOUSE_MOVE':
-            return mouseEvent( state, action )
+            return painterEvent( state, action )
         case 'PAINTER_MOUSE_UP':
-            return mouseEvent({
+            return painterEvent({
                 ...state,
-                isDown: false
+                painter: {
+                    ...painter,
+                    isDown: false
+                }
             }, action )
         case 'SELECT_TOOL':
             return {

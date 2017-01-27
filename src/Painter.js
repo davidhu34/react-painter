@@ -4,7 +4,7 @@ import { painterMouseActions, painterRegisterCanvas } from './actions'
 import Canvas from './Canvas'
 
 export default connect(
-    state => ({ ...state.painter }),
+    state => ({ ...state.painter.painter }),
     dispatch => ({
         mouseActions: painterMouseActions(dispatch),
         registerCanvas: (ctx) => dispatch( painterRegisterCanvas(ctx) )
