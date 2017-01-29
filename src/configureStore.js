@@ -6,7 +6,7 @@ import createLogger from 'redux-logger'
 import App from './reducers'
 
 const freshStore = () => {
-    const middlewares = [ thunk, promise ]
+    const middlewares = [ thunk ]
     middlewares.push( createLogger() )
 
     return createStore(

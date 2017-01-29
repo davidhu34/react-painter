@@ -37,28 +37,8 @@ const painter = ( state = initState, action ) => {
                     isDown: false
                 }
             }, action )
-       /*case 'RIBBON_MOUSE_DOWN':
-            return {
-                ...state
-                colorPicker: {
-                    ...colorPicker,
-                    ribbon: {
-                        ...ribbon,
-                        isDown: true
-                    }
-                }
-            }
-        case 'RIBBON_MOUSE_UP':
-             return {
-                 ...state
-                 colorPicker: {
-                     ...colorPicker,
-                     ribbon: {
-                         ...ribbon,
-                         isDown: false
-                     }
-                 }
-             }*/
+       case 'RIBBON_MOUSE_DOWN':
+            return state
         // selections
         case 'SELECT_TOOL':
             return {

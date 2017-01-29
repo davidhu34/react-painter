@@ -34,7 +34,7 @@ export const ribbonMouseActions = dispatch => isDown => {
     if (isDown)
         onMouseDown = null
     else
-        onMouseUp = null
+        onMouseMove = onMouseUp = null
     onMouseOut = onMouseUp
     onMouseEnter = null
     return { onMouseDown, onMouseMove, onMouseUp, onMouseOut, onMouseEnter }
@@ -45,10 +45,23 @@ export const paletteMouseActions = dispatch => isDown => {
     if (isDown)
         onMouseDown = null
     else
-        onMouseUp = null
+        onMouseMove = onMouseUp = null
     onMouseOut = onMouseUp
     onMouseEnter = null
     return { onMouseDown, onMouseMove, onMouseUp, onMouseOut, onMouseEnter }
+}
+
+
+export const startDrag = (event) => ( dispatch, getState ) => {
+    const log =  (e) => {
+        console.log(e.pageY)
+        //dispatch( changeBaseColor(y) )
+        //dispatch( chooseColor)
+    }
+    document.addEventListener("mousemove", log)
+    document.addEventListener("mouseup", (e) => {
+        document.removeEventListener("mousemove",log, false)
+    })
 }
 
 export const painterRegisterCanvas = context => ({
