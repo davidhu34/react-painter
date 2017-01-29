@@ -4,18 +4,52 @@ export const Add = () => ({
 
 const mouseAction = (type, event) => ({ type, event })
 const mouseActions = (upon, dispatch) => ({
-    down : (e) => dispatch(mouseAction(upon+'MOUSE_DOWN', e)),
-    move: (e) => dispatch(mouseAction(upon+'MOUSE_MOVE', e)),
-    up: (e) => dispatch(mouseAction(upon+'MOUSE_UP', e)),
-    out: (e) => dispatch(mouseAction(upon+'MOUSE_OUT', e)),
-    enter: (e) => dispatch(mouseAction(upon+'MOUSE_ENTER', e))
+    onMouseDown : (e) => dispatch(mouseAction(upon+'MOUSE_DOWN', e)),
+    onMouseMove: (e) => dispatch(mouseAction(upon+'MOUSE_MOVE', e)),
+    onMouseUp: (e) => dispatch(mouseAction(upon+'MOUSE_UP', e)),
+    onMouseOut: (e) => dispatch(mouseAction(upon+'MOUSE_OUT', e)),
+    onMouseEnter: (e) => dispatch(mouseAction(upon+'MOUSE_ENTER', e))
 })
-export const painterMouseActions = dispatch =>
+/*export const painterMouseActions = dispatch =>
     mouseActions('PAINTER_', dispatch)
 export const ribbonMouseActions = dispatch =>
     mouseActions('RIBBON_', dispatch)
 export const paletteMouseActions = dispatch =>
     mouseActions('PALETTE_', dispatch)
+*/
+export const painterMouseActions = dispatch => isDown => {
+    let { onMouseDown, onMouseMove, onMouseUp, onMouseOut, onMouseEnter }
+        = mouseActions('PAINTER_', dispatch)
+    if (isDown)
+        onMouseDown = null
+    else
+        onMouseMove = onMouseUp = null
+    onMouseOut = onMouseUp
+    onMouseEnter = null
+    return { onMouseDown, onMouseMove, onMouseUp, onMouseOut, onMouseEnter }
+}
+export const ribbonMouseActions = dispatch => isDown => {
+    let { onMouseDown, onMouseMove, onMouseUp, onMouseOut, onMouseEnter }
+        = mouseActions('RIBBON_', dispatch)
+    if (isDown)
+        onMouseDown = null
+    else
+        onMouseUp = null
+    onMouseOut = onMouseUp
+    onMouseEnter = null
+    return { onMouseDown, onMouseMove, onMouseUp, onMouseOut, onMouseEnter }
+}
+export const paletteMouseActions = dispatch => isDown => {
+    let { onMouseDown, onMouseMove, onMouseUp, onMouseOut, onMouseEnter }
+        = mouseActions('PALETTE_', dispatch)
+    if (isDown)
+        onMouseDown = null
+    else
+        onMouseUp = null
+    onMouseOut = onMouseUp
+    onMouseEnter = null
+    return { onMouseDown, onMouseMove, onMouseUp, onMouseOut, onMouseEnter }
+}
 
 export const painterRegisterCanvas = context => ({
     type: 'PAINTER_REG_CANVAS',

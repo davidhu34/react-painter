@@ -16,13 +16,8 @@ class Canvas extends Component {
     }
     render () {
         const { mouseActions, style, isDown } = this.props
-        const { down, move, up } = mouseActions
         return (
-            <canvas onMouseDown={ isDown ? null : down }
-                    onMouseMove={ isDown ? move : null }
-                    onMouseOut={ isDown ? up : null }
-                    onMouseUp={ isDown ? up : null }
-                    //onMouseEnter={enter}
+            <canvas {...mouseActions(isDown)}
                     style={style}/>
         )
     }

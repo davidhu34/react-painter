@@ -5,7 +5,7 @@ import Canvas from './Canvas'
 
 export default connect(
     state => ({ ...state.painter.painter }),
-    dispatch => ({
+    (dispatch, { isDown }) => ({
         mouseActions: painterMouseActions(dispatch),
         registerCanvas: (ctx) => dispatch( painterRegisterCanvas(ctx) )
     })

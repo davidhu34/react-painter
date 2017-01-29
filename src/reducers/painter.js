@@ -3,7 +3,9 @@ import { initState, initContext } from './init'
 
 const painter = ( state = initState, action ) => {
     const { painter, colorPicker } = state
+    const ribbon = colorPicker.ribbon
     switch ( action.type ) {
+        // register canvas
         case 'PAINTER_REG_CANVAS':
             return {
                 ...state,
@@ -16,6 +18,7 @@ const painter = ( state = initState, action ) => {
                 colorPicker:
                     initContext(colorPicker, action)
             }
+        // painter mouse actions
         case 'PAINTER_MOUSE_DOWN':
             return painterEvent({
                 ...state,
@@ -34,6 +37,29 @@ const painter = ( state = initState, action ) => {
                     isDown: false
                 }
             }, action )
+       /*case 'RIBBON_MOUSE_DOWN':
+            return {
+                ...state
+                colorPicker: {
+                    ...colorPicker,
+                    ribbon: {
+                        ...ribbon,
+                        isDown: true
+                    }
+                }
+            }
+        case 'RIBBON_MOUSE_UP':
+             return {
+                 ...state
+                 colorPicker: {
+                     ...colorPicker,
+                     ribbon: {
+                         ...ribbon,
+                         isDown: false
+                     }
+                 }
+             }*/
+        // selections
         case 'SELECT_TOOL':
             return {
                 ...state,
