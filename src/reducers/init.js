@@ -13,6 +13,7 @@ const initRibbon = {
     style: {
         border: '2px solid black'
     },
+    vertical: true,
     isDown: false,
     context: null
 }
