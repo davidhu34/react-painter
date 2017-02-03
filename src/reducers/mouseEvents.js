@@ -1,5 +1,6 @@
 import utils from '../utils/drawUtils'
 import dragContainment from '../utils/dragContainment'
+import color from 'color'
 
 const DOWN = 'PAINTER_MOUSE_DOWN'
 const MOVE = 'PAINTER_MOUSE_MOVE'
@@ -34,16 +35,17 @@ export const changeShadeColor = ( colorPicker, event ) => {
 	const context = palette.context
 	const { x, y } = dragContainment( context, event )
 	const { width, height } = context.canvas
-
+	console.log(...context.getImageData(x, y, 1,1).data)
+	const newColor = color.rgb(...context.getImageData(x, y, 1,1).data)
 	context.clearRect(0, 0, width, height)
 	context.putImageData(palette.background, 0, 0)
 	utils.drawPalettePoint(context)( x, y )
-
-	return colorPicker
+	console.log(newColor)
+	return newColor
 }
 
 export const painterEvent = ( state, action ) => {
-	const { painter, saves, points, tool } = state
+	const { painter, saves, points, tool, color } = state
 	const context = painter.context
 	const { type, event } = action
 	const canvas = context.canvas

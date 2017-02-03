@@ -36,6 +36,7 @@ export const initState = {
 	fillColor: '#00000f',
 	saves: [],
 	points: [],
+	color: null,
 	painter: initPainter,
 	colorPicker: {
 		ribbon: initRibbon,
