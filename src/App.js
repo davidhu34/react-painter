@@ -17,12 +17,6 @@ const App = ({ data, Add }) => (
         <ToolList />
         <ColorPalette />
         <ColorRibbon />
-        <div width={100} height={100}>
-            <div onMouseMove={(e)=>{ console.log(this)}} >
-                JJJJJJ
-            </div>
-
-        </div>
         <Painter />
     </div>
 )

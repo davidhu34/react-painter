@@ -15,7 +15,8 @@ const initRibbon = {
 	},
 	vertical: true,
 	isDown: false,
-	context: null
+	context: null,
+	background: null
 }
 const initPalette = {
 	width: 200,
@@ -24,7 +25,8 @@ const initPalette = {
 		border: '2px solid black'
 	},
 	isDown: false,
-	context: null
+	context: null,
+	background: null
 }
 
 export const initState = {
@@ -68,13 +70,14 @@ export const initContext = ( state, action ) => {
 			gradient.addColorStop(1, 'rgb(255, 0, 0)') // red
 			ctx.fillStyle = gradient
 			ctx.fillRect(0, 0, width, height)
-			ctx.strokeStyle = '#000000'
+			ctx.strokeStyle = '#ffffff'
 			ctx.lineWidth = 2
 			return {
 				...state,
 				ribbon: {
 					...ribbon,
-					context: ctx
+					context: ctx,
+					background: ctx.getImageData(0, 0, width, height)
 				}
 			}
 		}
@@ -93,13 +96,14 @@ export const initContext = ( state, action ) => {
 			blackGrad.addColorStop(1, 'rgb(0,0,0)')
 			ctx.fillStyle = blackGrad
 			ctx.fillRect(0, 0, width, height)
-			ctx.strokeStyle = '#000000'
+			ctx.strokeStyle = '#ffffff'
 			ctx.lineWidth = 2
 			return {
 				...state,
 				palette: {
 					...palette,
-					context: ctx
+					context: ctx,
+					background: ctx.getImageData(0, 0, width, height)
 				}
 			}
 		}

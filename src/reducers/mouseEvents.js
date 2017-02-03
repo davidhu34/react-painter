@@ -18,15 +18,27 @@ const newSaves = (ctx, saves) => {
 }
 
 export const changeBaseColor = ( colorPicker, event ) => {
-	const { context, vertical } = colorPicker.ribbon
+	const ribbon = colorPicker.ribbon
+	const { context, vertical } = ribbon
 	const { x, y } = dragContainment( context, event )
+	const { width, height } = context.canvas
+
+	context.clearRect(0, 0, width, height)
+	context.putImageData(ribbon.background, 0, 0)
 	utils.drawRibbonBar(context)( x, y, vertical)
-	return colorPicker 
+
+	return colorPicker
 }
 export const changeShadeColor = ( colorPicker, event ) => {
-	const context = colorPicker.palette.context
+	const palette = colorPicker.palette
+	const context = palette.context
 	const { x, y } = dragContainment( context, event )
-	utils.drawPalettePointer(context)( x, y )
+	const { width, height } = context.canvas
+
+	context.clearRect(0, 0, width, height)
+	context.putImageData(palette.background, 0, 0)
+	utils.drawPalettePoint(context)( x, y )
+
 	return colorPicker
 }
 
@@ -40,7 +52,7 @@ export const painterEvent = ( state, action ) => {
 	context.clearRect(0, 0, canvas.width, canvas.height)
 	const lastSave = saves.length > 0 ?
 		saves[0] : null
-	if (lastSave) context.putImageData(lastSave,0,0)
+	if (lastSave) context.putImageData(lastSave, 0, 0)
 	/*if (saves.length > 0) {
 		lastSave = new Image()
 		context.drawImage(lastSave, 0, 0)

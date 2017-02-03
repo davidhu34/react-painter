@@ -111,10 +111,10 @@ export default ({
 		}
 		context.closePath()
 	},
-	drawPalettePoint: context => 
+	drawPalettePoint: context =>
 	( x, y ) => {
 		context.beginPath()
-		context.arc(x, y, 2, 0, 2*Math.PI, false)
+		context.arc(x, y, 5, 0, 2*Math.PI, false)
 		context.stroke()
 		context.closePath()
 	}

@@ -10,6 +10,13 @@ const mouseActions = (upon, dispatch) => ({
 	onMouseOut: (e) => dispatch(mouseAction(upon+'MOUSE_OUT', e)),
 	onMouseEnter: (e) => dispatch(mouseAction(upon+'MOUSE_ENTER', e))
 })
+const mouseNullActions = {
+	onMouseDown : null,
+	onMouseMove: null,
+	onMouseUp: null,
+	onMouseOut: null,
+	onMouseEnter: null
+}
 
 export const painterMouseActions = dispatch => isDown => {
 	let { onMouseDown, onMouseMove, onMouseUp, onMouseOut, onMouseEnter }
@@ -24,37 +31,19 @@ export const painterMouseActions = dispatch => isDown => {
 }
 export const ribbonMouseActions = dispatch => isDown => {
 	let { onMouseDown, onMouseMove, onMouseUp, onMouseOut, onMouseEnter }
-		= mouseActions('RIBBON_', dispatch)
-	onMouseDown = (e) => dispatch(startDrag(e))
-	if (isDown)
-		onMouseDown = null
-	else
-		onMouseMove = onMouseUp = null
-	onMouseOut = onMouseUp
-	onMouseEnter = null
+		= mouseNullActions
+	onMouseDown = (e) => dispatch(startRibbonDrag(e))
+	if (isDown) onMouseDown = null
 	return { onMouseDown, onMouseMove, onMouseUp, onMouseOut, onMouseEnter }
 }
 export const paletteMouseActions = dispatch => isDown => {
 	let { onMouseDown, onMouseMove, onMouseUp, onMouseOut, onMouseEnter }
-		= mouseActions('PALETTE_', dispatch)
-	if (isDown)
-		onMouseDown = null
-	else
-		onMouseMove = onMouseUp = null
-	onMouseOut = onMouseUp
-	onMouseEnter = null
+		= mouseNullActions
+    onMouseDown = (e) => dispatch(startPaletteDrag(e))
+	if (isDown)	onMouseDown = null
 	return { onMouseDown, onMouseMove, onMouseUp, onMouseOut, onMouseEnter }
 }
 
-
-export const startDrag = (event) => ( dispatch, getState ) => {
-	dispatch( mouseAction('RIBBON_MOUSE_DOWN', event))
-	const log = (e) => dispatch( changeBaseColor(e) )
-	document.addEventListener("mousemove", log)
-	document.addEventListener("mouseup", (e) => {
-		document.removeEventListener("mousemove", log, false)
-	})
-}
 const changeBaseColor = e => ({
 	type: 'CHANGE_BASE_COLOR',
 	event: e
@@ -63,6 +52,22 @@ const changeShadeColor = e => ({
 	type: 'CHANGE_SHADE_COLOR',
 	event: e
 })
+export const startRibbonDrag = (event) => ( dispatch, getState ) => {
+	dispatch( mouseAction('RIBBON_MOUSE_DOWN', event))
+	const log = (e) => dispatch( changeBaseColor(e) )
+	document.addEventListener("mousemove", log)
+	document.addEventListener("mouseup", (e) => {
+		document.removeEventListener("mousemove", log, false)
+	})
+}
+export const startPaletteDrag = (event) => ( dispatch, getState ) => {
+	dispatch( mouseAction('PALETTE_MOUSE_DOWN', event))
+	const log = (e) => dispatch( changeShadeColor(e) )
+	document.addEventListener("mousemove", log)
+	document.addEventListener("mouseup", (e) => {
+		document.removeEventListener("mousemove", log, false)
+	})
+}
 
 
 export const painterRegisterCanvas = context => ({
