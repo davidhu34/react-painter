@@ -94,7 +94,9 @@ export default ({
 		context.closePath()
 	},
 	drawRibbonBar: context =>
-	( x, y, vertical ) => {
+	( x,y, vertical ) => {
+		console.log("drawing")
+		console.log(x, y)
 		const { width, height } = context.canvas
 		context.beginPath()
 		if (vertical) {
@@ -108,7 +110,7 @@ export default ({
 			context.stroke()
 		}
 		context.closePath()
-	}
+	},
 	drawPalettePoint: context => 
 	( x, y ) => {
 		context.beginPath()

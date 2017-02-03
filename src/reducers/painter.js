@@ -43,17 +43,13 @@ const painter = ( state = initState, action ) => {
 			return {
 				...state,
 				colorPicker:
-					changeShadeColor(colorPicker, {
-						y: action.y
-					})
+					changeBaseColor(colorPicker, action.event)
 			}
 		case 'CHANGE_SHADE_COLOR':
 			return {
 				...state,
 				colorPicker:
-					changeShadeColor(colorPicker, {
-						x: action.x, y: action.y
-					})
+					changeShadeColor(colorPicker, action.event)
 			}
 		// selections
 		case 'SELECT_TOOL':

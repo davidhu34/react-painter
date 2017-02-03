@@ -1,4 +1,5 @@
 import utils from '../utils/drawUtils'
+import dragContainment from '../utils/dragContainment'
 
 const DOWN = 'PAINTER_MOUSE_DOWN'
 const MOVE = 'PAINTER_MOUSE_MOVE'
@@ -16,15 +17,16 @@ const newSaves = (ctx, saves) => {
 		imgs : imgs.slice(0,10)
 }
 
-export const changeBaseColor = ( colorPicker, mouse ) => {
+export const changeBaseColor = ( colorPicker, event ) => {
 	const { context, vertical } = colorPicker.ribbon
-	util.drawRibbonBar(context)( dragContainment( ctx, mouse ), vertical )
+	const { x, y } = dragContainment( context, event )
+	utils.drawRibbonBar(context)( x, y, vertical)
 	return colorPicker 
 }
-export const changeShadeColor = ( colorPicker, mouse ) => {
-	util.drawPalettePointer(
-		colorPicker.ribbon.context
-	)(dragContainment( ctx, mouse ))
+export const changeShadeColor = ( colorPicker, event ) => {
+	const context = colorPicker.palette.context
+	const { x, y } = dragContainment( context, event )
+	utils.drawPalettePointer(context)( x, y )
 	return colorPicker
 }
 

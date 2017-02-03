@@ -10,13 +10,7 @@ const mouseActions = (upon, dispatch) => ({
 	onMouseOut: (e) => dispatch(mouseAction(upon+'MOUSE_OUT', e)),
 	onMouseEnter: (e) => dispatch(mouseAction(upon+'MOUSE_ENTER', e))
 })
-/*export const painterMouseActions = dispatch =>
-	mouseActions('PAINTER_', dispatch)
-export const ribbonMouseActions = dispatch =>
-	mouseActions('RIBBON_', dispatch)
-export const paletteMouseActions = dispatch =>
-	mouseActions('PALETTE_', dispatch)
-*/
+
 export const painterMouseActions = dispatch => isDown => {
 	let { onMouseDown, onMouseMove, onMouseUp, onMouseOut, onMouseEnter }
 		= mouseActions('PAINTER_', dispatch)
@@ -31,6 +25,7 @@ export const painterMouseActions = dispatch => isDown => {
 export const ribbonMouseActions = dispatch => isDown => {
 	let { onMouseDown, onMouseMove, onMouseUp, onMouseOut, onMouseEnter }
 		= mouseActions('RIBBON_', dispatch)
+	onMouseDown = (e) => dispatch(startDrag(e))
 	if (isDown)
 		onMouseDown = null
 	else
@@ -53,23 +48,20 @@ export const paletteMouseActions = dispatch => isDown => {
 
 
 export const startDrag = (event) => ( dispatch, getState ) => {
-	const log =  (e) => {
-		console.log(e.pageY)
-		//dispatch( changeBaseColor(y) )
-		//dispatch( chooseColor)
-	}
+	dispatch( mouseAction('RIBBON_MOUSE_DOWN', event))
+	const log = (e) => dispatch( changeBaseColor(e) )
 	document.addEventListener("mousemove", log)
 	document.addEventListener("mouseup", (e) => {
-		document.removeEventListener("mousemove",log, false)
+		document.removeEventListener("mousemove", log, false)
 	})
 }
-const changeBaseColor = y => ({
+const changeBaseColor = e => ({
 	type: 'CHANGE_BASE_COLOR',
-	y: y
+	event: e
 })
-const changeShadeColor = (x, y) => ({
+const changeShadeColor = e => ({
 	type: 'CHANGE_SHADE_COLOR',
-	x:x, y:y
+	event: e
 })
 
 
