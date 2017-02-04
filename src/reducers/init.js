@@ -14,6 +14,7 @@ const initRibbon = {
 		border: '2px solid black'
 	},
 	vertical: true,
+	position: {x:0, y:0},
 	isDown: false,
 	context: null,
 	background: null
@@ -25,6 +26,9 @@ const initPalette = {
 		border: '2px solid black'
 	},
 	isDown: false,
+	position: {
+		x:0, y:0
+	},
 	context: null,
 	background: null
 }
@@ -39,6 +43,7 @@ export const initState = {
 	color: null,
 	painter: initPainter,
 	colorPicker: {
+		color: null,
 		ribbon: initRibbon,
 		palette: initPalette
 	}

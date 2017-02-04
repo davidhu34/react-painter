@@ -1,6 +1,6 @@
 import utils from '../utils/drawUtils'
 import dragContainment from '../utils/dragContainment'
-import color from 'color'
+import Color from 'color'
 
 const DOWN = 'PAINTER_MOUSE_DOWN'
 const MOVE = 'PAINTER_MOUSE_MOVE'
@@ -18,30 +18,76 @@ const newSaves = (ctx, saves) => {
 		imgs : imgs.slice(0,10)
 }
 
-export const changeBaseColor = ( colorPicker, event ) => {
-	const ribbon = colorPicker.ribbon
-	const { context, vertical } = ribbon
-	const { x, y } = dragContainment( context, event )
+const changePalette = ( context, color ) => {
 	const { width, height } = context.canvas
+	const whiteGrad = context.createLinearGradient(0, 0, width, 0)
+	const blackGrad = context.createLinearGradient(0, 0, 0, height)
 
 	context.clearRect(0, 0, width, height)
-	context.putImageData(ribbon.background, 0, 0)
-	utils.drawRibbonBar(context)( x, y, vertical)
+	console.log(color.rgb())
+	context.fillStyle = color.rgb()
+	context.fillRect(0, 0, width, height)
 
-	return colorPicker
+	whiteGrad.addColorStop(0, 'rgb(255,255,255)')
+	whiteGrad.addColorStop(1, 'transparent')
+	context.fillStyle = whiteGrad
+	context.fillRect(0, 0, width, height)
+
+	blackGrad.addColorStop(0, 'transparent')
+	blackGrad.addColorStop(1, 'rgb(0,0,0)')
+	context.fillStyle = blackGrad
+	context.fillRect(0, 0, width, height)
+
+	context.fillStyle = color.rgb()
+}
+
+export const changeBaseColor = ( colorPicker, event ) => {
+	const { ribbon, palette } = colorPicker
+	const r_context = ribbon.context
+	const p_context = palette.context
+	const { x, y } = dragContainment( r_context, event )
+	const { width, height } = r_context.canvas
+
+	r_context.clearRect(0, 0, width, height)
+	r_context.putImageData(ribbon.background, 0, 0)
+	console.log(x, y)
+	console.log(...r_context.getImageData(x, y, 1,1).data)
+	const newBaseColor = Color.rgb(...r_context.getImageData(x, y, 1,1).data)
+	changePalette(p_context, newBaseColor)
+	
+	utils.drawRibbonBar(r_context)( x, y, ribbon.vertical)
+	utils.drawPalettePoint(p_context)( palette.position.x, palette.position.y )
+	return {
+		...colorPicker,
+		palette: {
+			...palette,
+			background: p_context.getImageData(0,0,p_context.canvas.width, p_context.canvas.height)
+		},
+		ribbon: {
+			...ribbon,
+			position: {x, y}
+		},
+		color: Color.rgb(...p_context.getImageData(palette.position.x, palette.position.y, 1,1).data)
+	}
 }
 export const changeShadeColor = ( colorPicker, event ) => {
 	const palette = colorPicker.palette
 	const context = palette.context
 	const { x, y } = dragContainment( context, event )
 	const { width, height } = context.canvas
-	console.log(...context.getImageData(x, y, 1,1).data)
-	const newColor = color.rgb(...context.getImageData(x, y, 1,1).data)
+
 	context.clearRect(0, 0, width, height)
 	context.putImageData(palette.background, 0, 0)
 	utils.drawPalettePoint(context)( x, y )
-	console.log(newColor)
-	return newColor
+
+	return {
+		...colorPicker,
+		palette: {
+			...palette,
+			position: {x, y}
+		},
+		color: Color.rgb(...context.getImageData(x, y, 1,1).data)
+	}
 }
 
 export const painterEvent = ( state, action ) => {

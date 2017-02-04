@@ -39,19 +39,22 @@ const painter = ( state = initState, action ) => {
 			}, action )
 		case 'RIBBON_MOUSE_DOWN':
 			return state
-		case 'CHANGE_BASE_COLOR':
+		case 'CHANGE_BASE_COLOR': {
+			const newColorPicker = changeBaseColor(colorPicker, action.event)
+			state.painter.context.strokeStyle = newColorPicker.color.rgb()
 			return {
 				...state,
-				colorPicker:
-					changeBaseColor(colorPicker, action.event)
+				color: newColorPicker
 			}
-		case 'CHANGE_SHADE_COLOR':
-			const newColor = changeShadeColor(colorPicker, action.event)
-			state.painter.context.strokeStyle = newColor.rgb()
+		}
+		case 'CHANGE_SHADE_COLOR': {
+			const newColorPicker = changeShadeColor(colorPicker, action.event)
+			state.painter.context.strokeStyle = newColorPicker.color.rgb()
 			return {
 				...state,
-				color: newColor
+				colorPicker: newColorPicker
 			}
+		}
 		// selections
 		case 'SELECT_TOOL':
 			return {
