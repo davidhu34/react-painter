@@ -6,12 +6,12 @@ export default ( ctx, e ) => {
 	const y0 = ctx.canvas.offsetTop
 	const containX
 		= ( x < x0 )? x0
-		: ( x < x0 + width )? x
-		:  (x0 + width)
+		: ( x < x0 + width - 1)? x
+		:  (x0 + width - 1)
 	const containY
 		= ( y < y0 )? y0
-		: ( y < y0 + height )? y
-		: y0 + height
+		: ( y < y0 + height - 1)? y
+		: y0 + height - 1
 	return {
 		x: containX - x0,
 		y: containY - y0

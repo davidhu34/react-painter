@@ -55,6 +55,7 @@ const changeShadeColor = e => ({
 export const startRibbonDrag = (event) => ( dispatch, getState ) => {
 	dispatch( mouseAction('RIBBON_MOUSE_DOWN', event))
 	const log = (e) => dispatch( changeBaseColor(e) )
+	log(event)
 	document.addEventListener("mousemove", log)
 	document.addEventListener("mouseup", (e) => {
 		document.removeEventListener("mousemove", log, false)
@@ -63,6 +64,7 @@ export const startRibbonDrag = (event) => ( dispatch, getState ) => {
 export const startPaletteDrag = (event) => ( dispatch, getState ) => {
 	dispatch( mouseAction('PALETTE_MOUSE_DOWN', event))
 	const log = (e) => dispatch( changeShadeColor(e) )
+	log(event)
 	document.addEventListener("mousemove", log)
 	document.addEventListener("mouseup", (e) => {
 		document.removeEventListener("mousemove", log, false)

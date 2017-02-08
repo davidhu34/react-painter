@@ -44,7 +44,7 @@ const painter = ( state = initState, action ) => {
 			state.painter.context.strokeStyle = newColorPicker.color.rgb()
 			return {
 				...state,
-				color: newColorPicker
+				colorPicker: newColorPicker
 			}
 		}
 		case 'CHANGE_SHADE_COLOR': {

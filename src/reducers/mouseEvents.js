@@ -54,14 +54,17 @@ export const changeBaseColor = ( colorPicker, event ) => {
 	console.log(...r_context.getImageData(x, y, 1,1).data)
 	const newBaseColor = Color.rgb(...r_context.getImageData(x, y, 1,1).data)
 	changePalette(p_context, newBaseColor)
+
+	const newBackground = p_context.getImageData(0,0,p_context.canvas.width, p_context.canvas.height)
 	
 	utils.drawRibbonBar(r_context)( x, y, ribbon.vertical)
 	utils.drawPalettePoint(p_context)( palette.position.x, palette.position.y )
+
 	return {
 		...colorPicker,
 		palette: {
 			...palette,
-			background: p_context.getImageData(0,0,p_context.canvas.width, p_context.canvas.height)
+			background: newBackground
 		},
 		ribbon: {
 			...ribbon,
@@ -215,7 +218,8 @@ export const painterEvent = ( state, action ) => {
 					utils.drawDot(context)(x,y)
 					return {
 						...state,
-						points: newPoints
+						points: newPoints,
+						saves: newSaves(context, saves)
 					}
 				case MOVE:
 					utils.drawLine(context)(x, y, newPoints)
