@@ -14,7 +14,7 @@ const initRibbon = {
 		border: '2px solid black'
 	},
 	vertical: true,
-	position: {x:0, y:0},
+	position: {x:0, y:150},
 	isDown: false,
 	context: null,
 	background: null
@@ -27,7 +27,7 @@ const initPalette = {
 	},
 	isDown: false,
 	position: {
-		x:0, y:0
+		x:250, y:50
 	},
 	context: null,
 	background: null

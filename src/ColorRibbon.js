@@ -5,7 +5,7 @@ import { ribbonMouseActions, ribbonRegisterCanvas, startDrag } from './actions'
 import Canvas from './Canvas'
 
 export default connect(
-    state => ({ ...state.painter.colorPicker.ribbon }),
+    state => ({ ...state.app.colorPicker.ribbon }),
     dispatch => ({
         mouseActions: ribbonMouseActions(dispatch),
         startDraggable: (e) => dispatch( startDrag(e) ),

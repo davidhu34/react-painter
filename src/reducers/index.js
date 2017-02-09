@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
 import { data } from './data'
-import painter from './painter'
+import app from './app'
 
 const App = combineReducers({
     data,
-    painter
+    app
 })
 
 export default App
