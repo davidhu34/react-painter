@@ -8,17 +8,12 @@ const painter = ( state = initState, action ) => {
 	switch ( action.type ) {
 		// register canvas
 		case 'PAINTER_REG_CANVAS':
+			const painterState = painterInit(painter, action)
+			painterState.context.strokeStyle = colorPicker.color.rgb()
 			return {
 				...state,
-				painter: painterInit(painter, action)
+				painter: painterState
 			}
-		case 'RIBBON_REG_CANVAS':
-		case 'PALETTE_REG_CANVAS':
-			return {
-				...state,
-				colorPicker: ColorPicker(colorPicker, action)
-			}
-
 		case 'PAINTER_MOUSE_DOWN':
 		case 'PAINTER_MOUSE_MOVE':
 		case 'PAINTER_MOUSE_UP':
@@ -28,41 +23,20 @@ const painter = ( state = initState, action ) => {
 					{ ...action, tool:state.tool }
 				)
 			}
-		/*// painter mouse actions
-		case 'PAINTER_MOUSE_DOWN':
-			return painterEvent({
+		case 'RIBBON_REG_CANVAS':
+		case 'PALETTE_REG_CANVAS':
+			return {
 				...state,
-				painter: {
-					...painter,
-					isDown: true
-				}
-			}, action )
-		case 'PAINTER_MOUSE_MOVE':
-			return painterEvent( state, action )
-		case 'PAINTER_MOUSE_UP':
-			return painterEvent({
-				...state,
-				painter: {
-					...painter,
-					isDown: false
-				}
-			}, action )*/
-		case 'CHANGE_BASE_COLOR': {
-			const newColorPicker = changeBaseColor(colorPicker, action.event)
+				colorPicker: ColorPicker(colorPicker, action)
+			}
+		case 'CHANGE_BASE_COLOR':
+		case 'CHANGE_SHADE_COLOR':
+			const newColorPicker = ColorPicker(colorPicker, action)
 			state.painter.context.strokeStyle = newColorPicker.color.rgb()
 			return {
 				...state,
 				colorPicker: newColorPicker
 			}
-		}
-		case 'CHANGE_SHADE_COLOR': {
-			const newColorPicker = changeShadeColor(colorPicker, action.event)
-			state.painter.context.strokeStyle = newColorPicker.color.rgb()
-			return {
-				...state,
-				colorPicker: newColorPicker
-			}
-		}
 		// selections
 		case 'SELECT_TOOL':
 			return {

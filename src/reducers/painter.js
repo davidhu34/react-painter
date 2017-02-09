@@ -28,7 +28,7 @@ export const painterInit = (state, action) => {
 		context: ctx
 	}
 }
-export const pianterEvent = ( state, action ) => {
+export const painterEvent = ( state, action ) => {
 	const { context, saves, points } = state
 	const { type, event, tool } = action
 	const canvas = context.canvas

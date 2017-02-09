@@ -1,8 +1,6 @@
 export default ({
 	ribbonBar: context =>
 	( x,y, vertical ) => {
-		console.log("drawing")
-		console.log(x, y)
 		const { width, height } = context.canvas
 		context.beginPath()
 		if (vertical) {
@@ -31,7 +29,6 @@ export default ({
 		const blackGrad = context.createLinearGradient(0, 0, 0, height)
 
 		context.clearRect(0, 0, width, height)
-		console.log(color.rgb())
 		context.fillStyle = color.rgb()
 		context.fillRect(0, 0, width, height)
 

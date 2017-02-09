@@ -7,8 +7,6 @@ const pickColor = (pctx, pos) =>
 
 export default ( state, action ) => {
 	const { ribbon, palette } = state
-	const { r_width, r_height } = ribbon
-	const { p_width, p_height } = palette
 	const r_context = ribbon.context
 	const p_context = palette.context
 	const r_position = ribbon.position
@@ -16,6 +14,8 @@ export default ( state, action ) => {
 
 	switch ( action.type ) {
 		case 'CHANGE_BASE_COLOR': {
+			const { r_width, r_height } = r_context.canvas
+			const p_width=p_context.canvas.width, p_height = p_context.canvas.height
 			const { x, y } = dragContainment( r_context, action.event )
 			r_context.clearRect(0, 0, r_width, r_height)
 			r_context.putImageData(ribbon.background, 0, 0)
@@ -42,14 +42,15 @@ export default ( state, action ) => {
 			}
 		}
 		case 'CHANGE_SHADE_COLOR': {
+			const { p_width, p_height } = p_context.canvas
 			const { x, y } = dragContainment( p_context, action.event )
-			context.clearRect(0, 0, p_width, p_height)
-			context.putImageData(palette.background, 0, 0)
+			p_context.clearRect(0, 0, p_width, p_height)
+			p_context.putImageData(palette.background, 0, 0)
 			
-			utils.drawPalettePoint(p_context)( x, y )
+			draw.palettePoint(p_context)( x, y )
 
 			return {
-				...colorPicker,
+				...state,
 				palette: {
 					...palette,
 					position: {x,y}
@@ -62,13 +63,16 @@ export default ( state, action ) => {
 			ctx.strokeStyle = '#ffffff'
 			ctx.lineWidth = 2
 			draw.ribbon(ctx)(ribbon.vertical)
+			const ribbonData = ctx.getImageData(0, 0, 50, 200)
+			draw.ribbonBar(ctx)(r_position.x, r_position.y, ribbon.vertical)
 			return {
 				...state,
 				ribbon: {
 					...ribbon,
 					context: ctx,
-					background: ctx.getImageData(0, 0, r_width, r_height)
-				}
+					background: ribbonData
+				},
+				color: pickColor(p_context, p_position)
 			}
 		}
 		case 'PALETTE_REG_CANVAS': {
@@ -76,14 +80,16 @@ export default ( state, action ) => {
 			ctx.strokeStyle = '#ffffff'
 			ctx.lineWidth = 2
 			draw.changePalette(ctx)(Color('blue'))
-			draw.palettePoint(ctx)(p_position)
+			const newBackground = ctx.getImageData(0, 0, 200, 200)
+			draw.palettePoint(ctx)(p_position.x, p_position.y)
 			return {
 				...state,
 				palette: {
 					...palette,
 					context: ctx,
-					background: ctx.getImageData(0, 0, p_width, p_height)
-				}
+					background: newBackground
+				},
+				color: pickColor(ctx, p_position)
 			}
 		}
 		default:
