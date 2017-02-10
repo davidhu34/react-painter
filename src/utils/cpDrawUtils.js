@@ -27,17 +27,17 @@ export default ({
 		const { width, height } = context.canvas
 		const whiteGrad = context.createLinearGradient(0, 0, width, 0)
 		const blackGrad = context.createLinearGradient(0, 0, 0, height)
-
+		const colorStr = 'rgba('+color.red()+','+color.green()+','+color.blue()+',0)'
 		context.clearRect(0, 0, width, height)
-		context.fillStyle = color.rgb()
-		context.fillRect(0, 0, width, height)
+		//context.fillStyle = color.rgb()
+		//context.fillRect(0, 0, width, height)
 
 		whiteGrad.addColorStop(0, 'rgb(255,255,255)')
-		whiteGrad.addColorStop(1, 'transparent')
+		whiteGrad.addColorStop(1, color.string())
 		context.fillStyle = whiteGrad
 		context.fillRect(0, 0, width, height)
 
-		blackGrad.addColorStop(0, 'transparent')
+		blackGrad.addColorStop(0, 'rgba(0,0,0,0)')
 		blackGrad.addColorStop(1, 'rgb(0,0,0)')
 		context.fillStyle = blackGrad
 		context.fillRect(0, 0, width, height)

@@ -5,6 +5,7 @@ import Painter from './Painter'
 import ToolList from './ToolList'
 import ColorRibbon from './ColorRibbon'
 import ColorPalette from './ColorPalette'
+import RGB from './RGB'
 import { Add } from './actions'
 
 
@@ -18,6 +19,7 @@ const App = ({ data, Add }) => (
         <ColorPalette />
         <ColorRibbon />
         <Painter />
+        <RGB />
     </div>
 )
 
