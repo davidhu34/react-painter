@@ -71,7 +71,13 @@ export const startPaletteDrag = (event) => ( dispatch, getState ) => {
 	})
 }
 
-
+export const changeRGBValue = (color, value) => {
+	console.log(color, value)
+	return {
+	type: 'CHANGE_RGB_VALUE',
+	color: color,
+	value: value
+}}
 export const painterRegisterCanvas = context => ({
 	type: 'PAINTER_REG_CANVAS',
 	context: context
