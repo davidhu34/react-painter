@@ -38,6 +38,11 @@ const painter = ( state = initState, action ) => {
 				...state,
 				colorPicker: newColorPicker
 			}
+		case 'CHANGE_FOCUS':
+			return {
+				...state,
+				focus: action.to
+			}
 		// selections
 		case 'SELECT_TOOL':
 			return {

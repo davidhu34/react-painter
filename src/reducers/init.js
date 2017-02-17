@@ -37,6 +37,7 @@ const initPalette = {
 
 export const initState = {
 	tool: 'pen',
+	focus: null,
 	strokeColor: '#0dd00f',
 	fillColor: '#00000f',
 	painter: initPainter,

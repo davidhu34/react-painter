@@ -91,6 +91,9 @@ export const paletteRegisterCanvas = context => ({
 	context: context
 })
 
+export const changeFocus = (to) => ({
+	type: 'CHANGE_FOCUS', to: to
+})
 
 export const selectTool = tool => ({
 	type: 'SELECT_TOOL',

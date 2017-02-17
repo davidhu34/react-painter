@@ -24,10 +24,10 @@ export default ( state, action ) => {
 
 			draw.changePalette(p_context)(newBaseColor)
 			const newBackground = p_context.getImageData(0,0, p_width, p_height)
-			
+
 			draw.ribbonBar(r_context)( x, y, ribbon.vertical)
 			draw.palettePoint(p_context)( p_position.x, p_position.y )
-
+			console.log(y)
 			return {
 				...state,
 				palette: {
@@ -46,7 +46,7 @@ export default ( state, action ) => {
 			const { x, y } = dragContainment( p_context, action.event )
 			p_context.clearRect(0, 0, p_width, p_height)
 			p_context.putImageData(palette.background, 0, 0)
-			
+
 			draw.palettePoint(p_context)( x, y )
 
 			return {
@@ -65,20 +65,22 @@ export default ( state, action ) => {
 			let b = state.color.blue()
 			console.log(r,g,b)
 			switch(action.color) {
-				case 'r':
-					r = action.value
+				case 'R':
+					r = Number(action.value)
 					break
-				case 'g':
-					g = action.value
+				case 'G':
+					g = Number(action.value)
 					break
-				case 'b':
-					b = action.value
+				case 'B':
+					b = Number(action.value)
 					break
 				default:
 					break
 			}
 			const rgb = [r,g,b]
 			const sorted = rgb.sort( (a,b) => (a-b) )
+			console.log(sorted)
+			console.log(r,g,b)
 			const offset
 				= (r>=g && g>=b)? 0
 				: (g>=r && r>=b)? 1
@@ -86,7 +88,10 @@ export default ( state, action ) => {
 				: (b>=g && g>=r)? 3
 				: (b>=r && r>=g)? 4
 				: (r>=b && b>=g)? 5 :5
-			const rv = (offset + sorted[1]/sorted[2])/6
+			console.log(offset)
+			const rv = offset%2 === 0?
+				(offset + sorted[1]/sorted[2])/6
+				:(offset + (1-sorted[1]/sorted[2]))/6
 			const { r_width, r_height } = r_context.canvas
 			const p_width=p_context.canvas.width, p_height = p_context.canvas.height
 			const px = p_width-1 - p_width*sorted[0]/sorted[2]
@@ -98,7 +103,7 @@ export default ( state, action ) => {
 			console.log(x,y,rv)
 			if (ribbon.vertical) y = (rv)*r_context.canvas.height
 			else x = (rv)*r_width
-			
+
 			console.log(r,g,b)
 			console.log(x,y,px,py)
 
@@ -106,7 +111,7 @@ export default ( state, action ) => {
 
 			draw.changePalette(p_context)(newBaseColor)
 			const newBackground = p_context.getImageData(0,0, p_width, p_height)
-			
+
 			draw.ribbonBar(r_context)( x, y, ribbon.vertical)
 			draw.palettePoint(p_context)(px,py)
 
