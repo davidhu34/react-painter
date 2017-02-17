@@ -48,7 +48,7 @@ export default ( state, action ) => {
 			p_context.putImageData(palette.background, 0, 0)
 
 			draw.palettePoint(p_context)( x, y )
-
+			console.log(x,y)
 			return {
 				...state,
 				palette: {
@@ -94,8 +94,8 @@ export default ( state, action ) => {
 				:(offset + (1-sorted[1]/sorted[2]))/6
 			const { r_width, r_height } = r_context.canvas
 			const p_width=p_context.canvas.width, p_height = p_context.canvas.height
-			const px = p_width-1 - p_width*sorted[0]/sorted[2]
-			const py = (p_height)*sorted[2]/255 -1
+			const px = (p_width-1)*(1-sorted[0]/sorted[2])
+			const py = (p_height-1)*(1-sorted[2]/255)
 			r_context.clearRect(0, 0, r_width, r_height)
 			r_context.putImageData(ribbon.background, 0, 0)
 
@@ -133,7 +133,7 @@ export default ( state, action ) => {
 			ctx.strokeStyle = '#ffffff'
 			ctx.lineWidth = 2
 			draw.ribbon(ctx)(ribbon.vertical)
-			const ribbonData = ctx.getImageData(0, 0, 50, 200)
+			const ribbonData = ctx.getImageData(0, 0, 50, 255)
 			draw.ribbonBar(ctx)(r_position.x, r_position.y, ribbon.vertical)
 			return {
 				...state,
@@ -150,7 +150,7 @@ export default ( state, action ) => {
 			ctx.strokeStyle = '#ffffff'
 			ctx.lineWidth = 2
 			draw.changePalette(ctx)(Color('blue'))
-			const newBackground = ctx.getImageData(0, 0, 200, 200)
+			const newBackground = ctx.getImageData(0, 0, 255, 255)
 			draw.palettePoint(ctx)(p_position.x, p_position.y)
 			return {
 				...state,

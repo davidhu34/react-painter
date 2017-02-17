@@ -11,7 +11,7 @@ const initPainter = {
 }
 const initRibbon = {
 	width: 50,
-	height: 200,
+	height: 255,
 	style: {
 		border: '2px solid black'
 	},
@@ -22,8 +22,8 @@ const initRibbon = {
 	background: null
 }
 const initPalette = {
-	width: 200,
-	height: 200,
+	width: 255,
+	height: 255,
 	style: {
 		border: '2px solid black'
 	},
