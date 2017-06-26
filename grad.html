@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Painter</title>
+    <style type="text/css">
+    	* {
+    		margin:0;
+    	}
+    	canvas {
+
+    	}
+    </style>
+  </head>
+  <body>
+    <canvas id='canvas'>
+    </canvas>
+    <div id='color'></div>
+    <script>
+		var canvas = document.getElementById('canvas');
+		canvas.width = 256;
+		canvas.height = 256
+		var ctx = canvas.getContext('2d');
+
+		var gradient = ctx.createLinearGradient(0, 0, 256, 0);
+		gradient.addColorStop(0, 'green');
+		gradient.addColorStop(1, 'white');
+		ctx.fillStyle = gradient;
+		ctx.fillRect(0, 0, 256, 256);
+
+		console.log(ctx.getImageData(100,100, 1	, 1))
+		for(var i=0; i < 256; i++) {
+			for(var y=0; y < 256; y++) {
+				var ua = new Uint8ClampedArray([255-i-y,(255-i*155/256)-y*(255-i*155/256)/256,255-y,255])
+				ctx.putImageData(new ImageData(ua, 1, 1), i,y)
+			}
+		}
+		
+
+		var color = document.getElementById('color');
+		function pick(event) {
+		  var x = event.clientX;
+		  var y = event.clientY;
+		  var pixel = ctx.getImageData(x, y, 1, 1);
+		  var data = pixel.data;
+		  var rgba = 'rgba(' + data[0] + ', ' + data[1] +
+		             ', ' + data[2] + ', ' + (data[3]) + ')';
+		  color.style.background =  rgba;
+		  color.textContent = rgba;
+		}
+		canvas.addEventListener('mousemove', pick);
+		canvas.addEventListener('click', pick);
+    </script>
+  </body>
+</html>
